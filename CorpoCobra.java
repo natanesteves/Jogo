@@ -3,7 +3,7 @@ import java.awt.Color;
 import java.awt.Graphics;
 
 public class CorpoCobra {
-//variaveis da cobra os valores só são atribuidos na classe Screen
+    //variaveis da cobra
     private int xCoor, yCoor, width, height;
 
     public CorpoCobra(int xCoor, int yCoor, int tileSize) {
@@ -16,8 +16,8 @@ public class CorpoCobra {
 
     }
     public void draw(Graphics g) {
-        g.setColor(Color.BLACK);
-        g.fillRect(xCoor * width, yCoor * height, width, height);
+        g.setColor(Color.WHITE);
+        g.fillRect(xCoor * width, yCoor * height, width+2, height+2);
         // aqui fica declarado o crescimento do render da cobra mesma coisa pro ponto
         // g.fillRect(xCoor * width + 2, yCoor * height + 2, width -4, height-4);
     }

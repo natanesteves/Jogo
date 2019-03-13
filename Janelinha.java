@@ -1,3 +1,4 @@
+
 package Jogo;
 import javax.swing.JFrame;
 // po é o main só isso
@@ -17,6 +18,7 @@ public class Janelinha {
         frame.setVisible(true);
 
     }
+
     public static void main(String[] args) {
         new Janelinha();
     }

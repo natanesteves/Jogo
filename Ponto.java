@@ -7,8 +7,8 @@ public class Ponto {
     private int xCoor, yCoor, width, height;
 
     public Ponto(int xCoor, int yCoor, int tileSize) {
-        this.xCoor = xCoor;
-        this.yCoor = yCoor;
+        this.xCoor = xCoor+8;
+        this.yCoor = yCoor+8;
         width = tileSize;
         height = tileSize;
     }
@@ -16,10 +16,10 @@ public class Ponto {
 
     }
     public void draw(Graphics g) {
-        // deffinições do ponto cor. tamanho  são declarados na outra classe
+        // deffinições do ponto cor.
         g.setColor(Color.RED);
         //mas ja deixa pronto aqui para ele aumentar de tamanho junto com a tela
-        g.fillRect(xCoor * width , yCoor * height, width, height);
+        g.fillRect(xCoor * width , yCoor * height, width+4, height+4);
     }
 
     public int getxCoor() {
