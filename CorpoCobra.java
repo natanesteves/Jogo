@@ -3,7 +3,7 @@ import java.awt.Color;
 import java.awt.Graphics;
 
 public class CorpoCobra {
-    //variaveis da cobra
+    //variaveis da cobra os valores só são atribuidos na classe Screen
     private int xCoor, yCoor, width, height;
 
     public CorpoCobra(int xCoor, int yCoor, int tileSize) {

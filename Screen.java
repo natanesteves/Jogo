@@ -5,7 +5,6 @@ import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
-import java.security.Key;
 import java.util.ArrayList;
 import java.util.Random;
 
@@ -24,14 +23,15 @@ public class Screen extends JPanel implements Runnable, KeyListener {
     private boolean running = false;
 
     // instanciando a cobra e o ponto
-    CorpoCobra b;
-    ArrayList<CorpoCobra> snake;
-
+    private CorpoCobra b;
+    private ArrayList<CorpoCobra> snake;
+    private CorpoCobra c;
+    private ArrayList<CorpoCobra> snakec;
 
     private Ponto ponto;
     private ArrayList<Ponto> Pontos;
 
-    int Score, BestScore;
+    int Score,BestScore;
 
     // pro spwan do ponto
     private Random r;
@@ -41,7 +41,7 @@ public class Screen extends JPanel implements Runnable, KeyListener {
     private int size = 5;
 
     // direção do spwan
-    private boolean right = true, left = false, up = false, down = false;
+    private boolean right = true, left = false, up = false, down =false;
 
     private int ticks = 0;
 
@@ -59,7 +59,6 @@ public class Screen extends JPanel implements Runnable, KeyListener {
         Pontos = new ArrayList<Ponto>();
 
         start();
-
     }
 
     public void tick() {
@@ -69,14 +68,14 @@ public class Screen extends JPanel implements Runnable, KeyListener {
             snake.add(b);
         }
         // spawn dos pontos limite de até onde ele pode ir tem q mudar sempre q mudar o tamanho da janela
-        if (Pontos.size() == 0) {
+        if(Pontos.size() == 0) {
             int xCoor = r.nextInt(29);
             int yCoor = r.nextInt(29);
 
             ponto = new Ponto(xCoor, yCoor, 10);
             Pontos.add(ponto);
 
-            for (int i = 0; i < Pontos.size(); i++) {
+            for(int i = 0; i < Pontos.size(); i++) {
                 if (xCoor == Pontos.get(i).getxCoor() &&
                         yCoor == Pontos.get(i).getyCoor()) {
 
@@ -86,52 +85,52 @@ public class Screen extends JPanel implements Runnable, KeyListener {
         }
 
         //atualizando onde vc e o ponto estão, para poder saber se vc comeu o ponto e se sim dar spawn em outro e retirar o velho(agora tmb conta os pontos)
-        for (int i = 0; i < Pontos.size(); i++) {
-            if (xCoor == Pontos.get(i).getxCoor() &&
+        for(int i = 0; i < Pontos.size(); i++) {
+            if(xCoor == Pontos.get(i).getxCoor() &&
                     yCoor == Pontos.get(i).getyCoor()) {
-                Pontos.remove(i);
-                Score++;
-                size++;
+               Pontos.remove(i);
+               Score++;
+               size++;
                 i++;
 
             }
 
-            if (Score > BestScore) {
+            if (Score>BestScore){
                 BestScore = Score;
             }
         }
 
 
-        for (int i = 0; i < snake.size(); i++) {
-            if (xCoor == snake.get(i).getxCoor() &&
+        for(int i =0; i < snake.size(); i++) {
+            if(xCoor == snake.get(i).getxCoor() &&
                     yCoor == snake.get(i).getyCoor()) {
-                if (i != snake.size() - 1) {
+                if(i != snake.size() - 1) {
                     stop();
                 }
             }
         }
 
         //hit box da parade faz regra de 3 pra saber quando vc mudar o tamanho da janela
-        if (xCoor < 0 || xCoor > 39 || yCoor < 0 || yCoor > 39) {
-            System.exit(1);
+        if(xCoor < 0 || xCoor > 39 || yCoor < 0 || yCoor > 39) {
+            stop();
         }
 
 
         // define a velocidade baseado na quantidade de atualizações dos fps ´um calculo muito grande vai testando no erro ou acerto
         ticks++;
 
-        if (ticks > 495450) {
-            if (right) xCoor++;
-            if (left) xCoor--;
-            if (up) yCoor--;
-            if (down) yCoor++;
+        if(ticks > 495500) {
+            if(right) xCoor++;
+            if(left) xCoor--;
+            if(up) yCoor--;
+            if(down) yCoor++;
 
             ticks = 0;
 
             b = new CorpoCobra(xCoor, yCoor, 10);
             snake.add(b);
 
-            if (snake.size() > size) {
+            if(snake.size() > size) {
                 snake.remove(0);
             }
         }
@@ -155,23 +154,22 @@ public class Screen extends JPanel implements Runnable, KeyListener {
         for (int i = 0; i < snake.size(); i++) {
             snake.get(i).draw(g);
         }
-        for (int i = 0; i < Pontos.size(); i++) {
+        for(int i = 0; i < Pontos.size(); i++) {
             Pontos.get(i).draw(g);
         }
 
         //mensagens da tela
         g.setColor(Color.yellow);
-        g.drawString("Score :" + Score, 10, 10);
+        g.drawString("Score :"+Score,10,10);
 
         g.setColor(Color.yellow);
-        g.drawString("BestScore :" + BestScore, 100, 10);
+        g.drawString("BestScore :"+BestScore,100,10);
 
         g.setColor(Color.yellow);
-        g.drawString("Aperte Y para fechar o game R para reviver  ", 10, 390);
+        g.drawString("Aperte Y para fechar o game P para pausar ",10,390);
 
 
     }
-
     // importando os eventos para começar e parar o jogo. receber o input das teclas. checar se esta correndo
     public void start() {
         running = true;
@@ -180,8 +178,8 @@ public class Screen extends JPanel implements Runnable, KeyListener {
     }
 
     public void stop() {
-        running = false;
-        try {
+       running = false;
+       try {
             thread.join();
         } catch (InterruptedException e) {
             e.printStackTrace();
@@ -195,59 +193,50 @@ public class Screen extends JPanel implements Runnable, KeyListener {
             repaint();
         }
     }
+    public void pause() {
+        snake.remove(1);
 
-    public void restart() {
         running = true;
         thread = new Thread(this);
         thread.start();
 
     }
-
     @Override
     // metodo para receber se as teclas foram apertadas
     public void keyPressed(KeyEvent e) {
         int key = e.getKeyCode();
-        if (key == KeyEvent.VK_RIGHT && !left) {
+        if(key == KeyEvent.VK_RIGHT && !left) {
             up = false;
             down = false;
             right = true;
         }
-        if (key == KeyEvent.VK_LEFT && !right) {
+        if(key == KeyEvent.VK_LEFT && !right) {
             up = false;
             down = false;
             left = true;
         }
-        if (key == KeyEvent.VK_UP && !down) {
+        if(key == KeyEvent.VK_UP && !down) {
             left = false;
             right = false;
             up = true;
         }
-        if (key == KeyEvent.VK_DOWN && !up) {
+        if(key == KeyEvent.VK_DOWN && !up) {
             left = false;
             right = false;
             down = true;
         }
-        if (key == KeyEvent.VK_Y) {
+        if(key == KeyEvent.VK_Y) {
             System.exit(1);
         }
-        // reseta a cobra o ponto e limpa o score
-        if (key == KeyEvent.VK_R) {
-            snake.clear();
-            Pontos.clear();
-            start();
-            tick();
-            repaint();
-            paint(getGraphics());
-            Score = 0;
+        if(key == KeyEvent.VK_P) {
+            pause();
         }
-
 
     }
 
     @Override
     public void keyReleased(KeyEvent arg0) {
     }
-
     public void keyTyped(KeyEvent arg0) {
     }
 }

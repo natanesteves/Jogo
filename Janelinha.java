@@ -20,6 +20,6 @@ public class Janelinha {
     }
 
     public static void main(String[] args) {
-        new Janelinha();
+         new Janelinha();
     }
 }

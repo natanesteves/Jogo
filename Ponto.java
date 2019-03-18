@@ -16,7 +16,7 @@ public class Ponto {
 
     }
     public void draw(Graphics g) {
-        // deffinições do ponto cor.
+        // deffinições do ponto cor. tamanho  são declarados na outra classe
         g.setColor(Color.RED);
         //mas ja deixa pronto aqui para ele aumentar de tamanho junto com a tela
         g.fillRect(xCoor * width , yCoor * height, width+4, height+4);
